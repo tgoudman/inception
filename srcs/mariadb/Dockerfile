@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.21
 ENV SQL_DATABASE=my_database \
 	SQL_USER=my_user \
 	SQL_PASSWORD=my_password \
@@ -7,7 +7,7 @@ ENV SQL_DATABASE=my_database \
 RUN apk update && apk add --no-cache mariadb mariadb-client bash
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
-COPY ./init.sh /init.sh
+COPY conf/init.sh /init.sh
 RUN chmod +x /init.sh
 
 VOLUME /var/lib/mysql
