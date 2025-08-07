@@ -21,3 +21,4 @@ chown -R mysql:mysql /run/mysqld
 # Démarrer MariaDB normalement
 echo "Démarrage du serveur MariaDB..."
 exec mysqld --user=mysql --console
+
