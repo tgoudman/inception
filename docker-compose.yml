@@ -13,17 +13,16 @@ services:
     restart: unless-stopped
     expose:
         - "3306"
-
   nginx:
-  	container_name: nginx
-	networks:
-		- inception
+    container_name: nginx
+    networks:
+        - inception
     build:
-   		context: requirements/nginx
-    	dockerfile: Dockerfile
+        context: requirements/nginx
+        dockerfile: Dockerfile
     env_file: .env
     volumes:
-		- wordpress:/var/www/wordpress
+        - wordpress:/var/www/wordpress
     depends_on:
     - wordpress
     ports:
@@ -39,11 +38,11 @@ services:
     networks:
       - inception
     build:
-    context: requirement/nginx
-    dockerfile: Dockerfile
+       context: requirements/nginx
+       dockerfile: Dockerfile
     depends_on:
       - mariadb
-    restart: on-faillure
+    restart: on-failure
     expose:
     - "9000"
 
@@ -53,13 +52,13 @@ volumes:
     driver_opts:
     type: 'none'
     o: 'bind'
-    devices: '/Users/login/data/wordpress'
+    device: '/home/tgoudman/login/data/wordpress'
   mariadb:
     driver: local
     driver_opts:
     type: 'none'
     o: 'bind'
-    device: '/Users/login/data/mariadb'
+    device: '/home/tgoudman/data/mariadb'
 
 networks:
   inception:
