@@ -1,45 +1,42 @@
+# Minimal color codes
+END=\033[0m
+REV=\033[7m
+GREY=\033[30m
+RED=\033[31m
+GREEN=\033[32m
+YELLOW=\033[33m
+CYAN=\033[36m
+WHITE=\033[37m
 
+NAME=inception
 
-# minimal color codes
-END=$'\x1b[0m
-REV=$'\x1b[7m
-GREY=$'\x1b[30m
-RED=$'\x1b[31m
-GREEN=$'\x1b[32m
-CYAN=$'\x1b[36m
-WHITE=$'\x1b[37m
+all: $(NAME)
 
-NAME = inception
+$(NAME): build
+	@$(MAKE) up
 
-all : $(NAME)
-
-$(NAME) : build
-	@make up
-
-build :
-	@echo "${YELLOW}> Image building 🎉${END}"
+build:
+	@echo "${YELLOW}> Image building${END}"
 	@mkdir -p ${HOME}/data/wordpress
 	@mkdir -p ${HOME}/data/mariadb
 	@mkdir -p ${HOME}/data/adminer
-	@docker-compose -f ./srcs/docker-compose.yml build
-		
-up :
-	@echo "${YELLOW}> Turning up images 🎉${END}"
-	@docker-compose -f ./srcs/docker-compose.yml up -d
-	
-down :
-	@echo "${YELLOW}> Turning down images ❌${END}"
-	@docker-compose -f ./srcs/docker-compose.yml down
+	@docker compose -f ./srcs/docker-compose.yml build
 
-re:
-	@make down
-	@make clean
-	@make build
-	@make up
+up:
+	@echo "${YELLOW}> Turning up images${END}"
+	@docker compose -f ./srcs/docker-compose.yml up -d
+
+down:
+	@echo "${YELLOW}> Turning down images${END}"
+	@docker compose -f ./srcs/docker-compose.yml down
+
+re: down clean build up
 
 clean: down
-	@echo "${YELLOW}> Cleaning and deleting all images 🧹${END}"
-	@ { docker volume ls -q ; echo null; } | xargs -r docker volume rm --force
+	@echo "${YELLOW}> Cleaning and deleting all volumes${END}"
+	@docker ps -a -q | xargs -r docker rm -f
+	@docker volume ls -q | xargs -r docker volume rm --force
 	@sudo rm -rf ${HOME}/data/
 
-.PHONY:	all re down clean up build
+
+.PHONY: all re down clean up build
