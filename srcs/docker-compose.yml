@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     networks:
       - inception
+    ports:
+      - "3306:3306"
 
   wordpress:
     container_name: wordpress
