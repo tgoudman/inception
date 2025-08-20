@@ -1,23 +1,16 @@
-FROM alpine:3.21
+FROM alpine:3.21.3
 
-# Installer MariaDB et bash
-RUN apk update && apk add --no-cache mariadb mariadb-client bash
+RUN apk update && apk upgrade && \
+    apk add --no-cache mariadb mariadb-client mariadb-server-utils openrc bash
 
-# Copier la configuration
-COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+# Répertoire runtime
+RUN mkdir -p /run/mysqld && \
+    chown -R mysql:mysql /run/mysqld
 
-# Créer le répertoire des sockets et logs
-RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
+COPY ./conf/my.cnf /etc/my.cnf
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Copier le script d'initialisation
-COPY conf/init.sh /init.sh
-RUN chmod +x /init.sh
-
-# Volume pour les données
-VOLUME /var/lib/mysql
-
-# Exposer le port MySQL
 EXPOSE 3306
 
-# Lancer MariaDB via le script d'initialisation
-CMD ["/init.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
