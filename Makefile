@@ -1,42 +1,23 @@
-# Minimal color codes
-END=\033[0m
-REV=\033[7m
-GREY=\033[30m
-RED=\033[31m
-GREEN=\033[32m
-YELLOW=\033[33m
-CYAN=\033[36m
-WHITE=\033[37m
+DOCKER_COMPOSE=docker compose
 
-NAME=inception
+DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
 
-all: $(NAME)
-
-$(NAME): build
-	@$(MAKE) up
+.PHONY: kill build down clean restart
 
 build:
-	@echo "${YELLOW}> Image building${END}"
-	@mkdir -p ${HOME}/data/wordpress
-	@mkdir -p ${HOME}/data/mariadb
-	@mkdir -p ${HOME}/data/adminer
-	@docker compose -f ./srcs/docker-compose.yml build
-
-up:
-	@echo "${YELLOW}> Turning up images${END}"
-	@docker compose -f ./srcs/docker-compose.yml up -d
-
+	mkdir -p /home/tgoudman/data/mysql
+	mkdir -p /home/tgoudman/data/wordpress
+	@$(DOCKER_COMPOSE)  -f $(DOCKER_COMPOSE_FILE) up --build -d
+kill:
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) kill
 down:
-	@echo "${YELLOW}> Turning down images${END}"
-	@docker compose -f ./srcs/docker-compose.yml down
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
+clean:
+	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v
 
-re: down clean build up
+fclean: clean
+	rm -rf ./data/mysql
+	rm -rf ./data/wordpress
+	docker system prune -a -f
 
-clean: down
-	@echo "${YELLOW}> Cleaning and deleting all volumes${END}"
-	@docker ps -a -q | xargs -r docker rm -f
-	@docker volume ls -q | xargs -r docker volume rm --force
-	@sudo rm -rf ${HOME}/data/
-
-
-.PHONY: all re down clean up build
+restart: clean build

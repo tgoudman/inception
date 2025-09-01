@@ -1,0 +1,15 @@
+FROM debian:bookworm
+
+RUN apt-get update -y \
+ && apt-get install -y php8.2-fpm php8.2-mysql curl default-mysql-client \
+ && rm -rf /var/lib/apt/lists/*
+
+# Télécharger WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
+COPY ./tools/script.sh /usr/local/bin/script.sh
+COPY ./tools/wp-config.php /usr/local/bin/wp-config.php
+
+ENTRYPOINT ["/usr/local/bin/script.sh"]

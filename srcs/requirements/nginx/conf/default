@@ -1,0 +1,23 @@
+server {
+    listen 443 ssl;
+    server_name localhost;
+
+    ssl_certificate /etc/ssl/certs/mydomain.crt;
+    ssl_certificate_key /etc/ssl/private/mydomain.key;
+
+    root /var/www/html;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass wordpress:9000;  # Assurez-vous que 'wordpress' est bien le nom du service PHP-FPM dans le conteneur
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Autres configurations si nécessaires...
+}
