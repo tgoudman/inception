@@ -1,42 +1,28 @@
 #!/bin/bash
-set -eu
+set -e
 
-echo "🔧 Préparation de la base de données..."
-mkdir -p /var/lib/mysql
-chown -R mysql:mysql /var/lib/mysql
-
-echo "🔍 Vérification de l'initialisation de MariaDB..."
-
-# Si MariaDB n'est pas encore initialisé, initialiser avec un mot de passe vide
+# Initialisation de la BDD au premier lancement
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "📦 Initialisation de MariaDB..."
-    mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
+  echo "=> Initialisation de la base MariaDB..."
+  mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 fi
 
-echo "🚀 Démarrage de MariaDB..."
-# Lancer MariaDB en arrière-plan
-mysqld_safe --datadir="/var/lib/mysql" --skip-networking &
+# Démarrage temporaire de MariaDB en arrière-plan
+mysqld_safe --skip-networking &
+sleep 5
 
-# Attendre que le serveur MariaDB soit prêt
-echo "⏳ Attente de MariaDB..."
-until mysqladmin ping --silent; do
-    echo "… en attente de MariaDB"
-    sleep 1
-done
-
-# Configuration de la base de données
-echo "🛠️ Configuration de la base de données..."
-mysql -u root -p"${mysql_root_password}" <<-EOSQL
-    CREATE DATABASE IF NOT EXISTS \`${database_name}\`;
-    CREATE USER IF NOT EXISTS '${mysql_user}'@'%' IDENTIFIED BY '${mysql_password}';
-    GRANT ALL PRIVILEGES ON \`${database_name}\`.* TO '${mysql_user}'@'%';
-    FLUSH PRIVILEGES;
+# Création de la base et de l'utilisateur
+echo "=> Création de la base et de l'utilisateur..."
+mariadb <<-EOSQL
+CREATE DATABASE IF NOT EXISTS ${DB_NAME};
+CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '12345';
+FLUSH PRIVILEGES;
 EOSQL
 
-# Pas besoin d'arrêter MariaDB ici, il est déjà en train de tourner
-# On ne fait qu'attendre pour laisser MariaDB tourner en arrière-plan
+# Stop temporairement MariaDB
+mysqladmin -u root -p12345 shutdown
 
-echo "✅ Configuration terminée, MariaDB est prêt !"
-
-# Garder MariaDB en marche pour le conteneur
-tail -f /dev/null
+# Redémarrage en mode normal (process principal Docker)
+exec mysqld_safe

@@ -1,18 +1,18 @@
 FROM debian:bookworm
 
-# Install MariaDB
+# Installation de MariaDB
 RUN apt-get update -y && \
     apt-get install -y mariadb-server && \
     mkdir -p /run/mysqld && \
-    chown -R mysql:mysql /run/mysqld && \
-    chown -R mysql:mysql /var/lib/mysql
+    chown -R mysql:mysql /run/mysqld
 
-# Copy setup script
-COPY ./tools/script.sh /tmp/script.sh
-RUN chmod +x /tmp/script.sh
+# Configuration MariaDB
+COPY ./tools/50-server.cnf /etc/mysql/mariadb.conf.d/
 
-# Allow external connections
-RUN sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+# Script d'init (exécuté par ENTRYPOINT)
+COPY ./tools/script.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-# Start MariaDB using mysqld directly (Docker best practice)
-ENTRYPOINT ["/tmp/script.sh"]
+EXPOSE 3306
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

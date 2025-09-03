@@ -16,8 +16,9 @@ clean:
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v
 
 fclean: clean
-	rm -rf ./data/mysql
-	rm -rf ./data/wordpress
+	chmod -R 777 ./srcs/data || true
+	rm -rf ./srcs/data/mysql
+	rm -rf ./srcs/data/wordpress
 	docker system prune -a -f
 
 restart: clean build

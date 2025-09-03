@@ -18,25 +18,13 @@
  * @package WordPress
  */
 
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define( 'DB_NAME', 'db1' );
-
-/** MySQL database username */
-define( 'DB_USER', 'user' );
-
-/** MySQL database password */
-define( 'DB_PASSWORD', 'pwd' );
-
-/** MySQL hostname */
-define( 'DB_HOST', 'mariadb' );
-
-/** Database Charset to use in creating database tables. */
+// ** Configuration MySQL à partir des variables d'environnement ** //
+define( 'DB_NAME', getenv('DB_NAME') ?: 'wordpress' );
+define( 'DB_USER', getenv('DB_USER') ?: 'wpuser' );
+define( 'DB_PASSWORD', getenv('DB_PASSWORD') ?: 'wppassword' );
+define( 'DB_HOST', getenv('DB_HOST') ?: 'mariadb' );
 define( 'DB_CHARSET', 'utf8' );
-
-/** The Database Collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
-
 define( 'WP_ALLOW_REPAIR', true );
 
 /**#@+
@@ -48,14 +36,14 @@ define( 'WP_ALLOW_REPAIR', true );
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         '):Uw9 :|7$m3yy=c^IM%d8}zG6yXY%25SDUyr.r#GcDP)[b25Yn$sDLNwR~I=kwq' );
-define( 'SECURE_AUTH_KEY',  'lBWxAzhu=StQ(s-[t_D8yH8_`0NiM~d[m q<{Hri]n#UM3J;@x[ne;,k<~cN`~%,' );
-define( 'LOGGED_IN_KEY',    ' /e+%ecWs`>hA<s`|+7rmujt>3MA}GD*n=D7W%$8h*Xc!jP?hn+fw0#;;g{Ywl@k' );
-define( 'NONCE_KEY',        ' -cX{xQc|GjD$=kXd,|lUX5)*oT)ru3^px-iU{q;`1If22EqIwA0/lPIIbpbtB=C' );
-define( 'AUTH_SALT',        'U9LX s1@q6$[*VV,MUhL7tS@;I9t_u*uDQIfZdG.ei1Amy$*.RI_TSTz#y=X.>Wq' );
-define( 'SECURE_AUTH_SALT', '0<MR&l4v=cZ)8Ke/#ip>2<Ed@ j<#pvLaOMc-jEFM9^tr`X*T2qDIB@)gg.0<e2V' );
-define( 'LOGGED_IN_SALT',   'xSHh4B]r[~)h%n$f(dCt;mD}#q gy$<{ >qGgPS>XH*]jH>W<!10>H<_16l{(OdP' );
-define( 'NONCE_SALT',       '7Ea$kvU|lkO8&X]b7^#K+w! lH2)SOelLiaYYX(Zz)Ebk_]-#m,J&aM<*JedFa| ' );
+define( 'AUTH_KEY',         'vk+o?j;E;lnp;9Zk:o6p1+sP;4<)yN.81n+HuJ||q>H^BcsG-6W<CrX=||_5)gT:' );
+define( 'SECURE_AUTH_KEY',  'dnVgp)E_O1g#eJ{1u/<hv-+xYEBJKUq|M]aHWT4s6|JILd+vks>.DVx<ab0$8o-U' );
+define( 'LOGGED_IN_KEY',    '];X+|p,+=u0bF^y+7LXh}Ri/)Xb,f?b6MgBF&)=quV1*QM9h%WRm%7)UWV,+^]X7' );
+define( 'NONCE_KEY',        'HM=v:Fkul;+l-Bi9Y|rrkF5>R+{M2VssC4*qtB|_+svsWR$Y&o$z%CZ#bi]_aimg' );
+define( 'AUTH_SALT',        '|`s0$[>|~1d2;:0g%L^|s!1G}ra4Xp/PQlD~o0]PsIj+#@0z.^1R<}Lr&ED5@A+v' );
+define( 'SECURE_AUTH_SALT', '0r/qUnKNfTT]a0c[Jm5LsC9rO4pr M{<wW]+M?EY<kX4#uCqMg)I.7eGVg:g,(Ds' );
+define( 'LOGGED_IN_SALT',   'Fr~Nem.$_u4tNMnIo|P[>-madt?;/@f]Ye|%5Wa!{dp2-V,[V<+s]~@zpNY~0kyz' );
+define( 'NONCE_SALT',       '2DVe{3ZO7w~XDpm)8q27n9-%Qk-vy/)uodDn]uGDcq-dM7PZ!J+UV$:bs] xk?gi' );
 
 define( 'WP_REDIS_HOST', 'redis' );
 define( 'WP_REDIS_PORT', 6379 );     
