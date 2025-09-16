@@ -4,8 +4,8 @@ RUN apt update; \
     apt install -y nginx openssl
 
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \ 
-    -keyout /etc/ssl/private/tgoudman.key \
-    -out /etc/ssl/certs/tgoudman.crt \
+    -keyout /etc/ssl/private/goudmand.key \
+    -out /etc/ssl/certs/goudmand.crt \
     -subj="/C=FR/ST=Normandie/L=LeHavre/O=42 Le Havre/OU=tgoudman/CN=tgoudman.42.fr"
 
 COPY ./tools/certs.sh /tmp/certs.sh

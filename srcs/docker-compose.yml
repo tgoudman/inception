@@ -4,7 +4,7 @@ services:
     build: ./requirements/nginx
     image: nginx:42
     ports:
-      - "8443:443"
+      - "443:443"
     depends_on:
       - wordpress
     volumes:
