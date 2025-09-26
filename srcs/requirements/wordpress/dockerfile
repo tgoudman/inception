@@ -9,6 +9,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
+# Modifier la config PHP-FPM pour écouter sur 0.0.0.0:9000
+RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/8.2/fpm/pool.d/www.conf
+
 COPY ./tools/script.sh /usr/local/bin/script.sh
 COPY ./tools/wp-config.php /usr/local/bin/wp-config.php
 

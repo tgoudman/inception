@@ -41,9 +41,12 @@ if ! env HTTP_HOST="$HTTP_HOST" wp core is-installed --allow-root --path=/var/ww
     --admin_password="$WP_ADMIN_PWD" \
     --admin_email="$WP_ADMIN_EMAIL" \
     --skip-email
-    wp user create $WP_USR $WP_EMAIL --role=author --user_pass=$WP_PWD --allow-root
 else
   echo "Wordpress already here"
+fi
+
+if ! wp user get "$WP_USR" --allow-root --path=/var/www/html; then
+  wp user create "$WP_USR" "$WP_EMAIL" --user_pass="$WP_PWD" --allow-root --path=/var/www/html
 fi
 
 exec php-fpm8.2 -F
