@@ -44,7 +44,17 @@ services:
 
 volumes:
   wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/tgoudman/data/wordpress
+      o: bind
   mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/tgoudman/data/mariadb
+      o: bind
 
 networks:
   inception:
