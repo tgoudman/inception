@@ -18,10 +18,10 @@ clean:
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v
 
 fclean: clean
-	chmod -R 777 ./srcs/data || true
-	rm -rf ./srcs/data/mysql
-	rm -rf ./srcs/data/wordpress
-	rm -rf ./srcs/data/mariadb
+	chmod -R 777 /home/tgoudman/data || true
+	sudo rm -rf /home/tgoudman/data/mysql
+	sudo rm -rf /home/tgoudman/data/wordpress
+	sudo rm -rf /home/tgoudman/data/mariadb
 	docker system prune -a -f
 
 restart: clean build
