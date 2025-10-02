@@ -8,7 +8,7 @@ build:
 	sudo mkdir -p /home/tgoudman/data/mysql
 	sudo mkdir -p /home/tgoudman/data/wordpress
 	sudo mkdir -p /home/tgoudman/data/mariadb
-	@$(DOCKER_COMPOSE)  -f $(DOCKER_COMPOSE_FILE) build --no-cache
+	@$(DOCKER_COMPOSE)  -f $(DOCKER_COMPOSE_FILE) build
 	@$(DOCKER_COMPOSE)  -f $(DOCKER_COMPOSE_FILE) up --build -d
 kill:
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) kill
@@ -22,6 +22,6 @@ fclean: clean
 	sudo rm -rf /home/tgoudman/data/mysql
 	sudo rm -rf /home/tgoudman/data/wordpress
 	sudo rm -rf /home/tgoudman/data/mariadb
-	docker system prune -a -f
+	docker system prune -f
 
 restart: clean build

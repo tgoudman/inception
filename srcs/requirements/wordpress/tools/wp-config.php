@@ -47,7 +47,8 @@ define( 'NONCE_SALT',       '2DVe{3ZO7w~XDpm)8q27n9-%Qk-vy/)uodDn]uGDcq-dM7PZ!J+
 
 define( 'WP_REDIS_HOST', 'redis' );
 define( 'WP_REDIS_PORT', 6379 );     
-
+define('WP_HOME', 'http://tgoudman.42.fr');
+define('WP_SITEURL', 'http://tgoudman.42.fr');
 
 define('WP_CACHE', true);
 
